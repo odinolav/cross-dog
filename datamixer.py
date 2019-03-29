@@ -4,9 +4,15 @@ import collections
 dogs1 = json.load(open('dog_list_1.json', 'r'))
 dogs2 = json.load(open('dog_list_2.json', 'r'))
 #dogs2
-#names1 = set([d['name'] for d in dogs1])
-#names2 = [d['name'] for d in dogs2]
-#print(len(names1), len(set(names1)), len(names2), len(set(names2)))
+names1 = set([d['name'] for d in dogs1])
+allnames2 = [d['name'] for d in dogs2]
+len(names2_pure)
+#names2 = set([d['name'] for d in dogs2 if len(d['parents'])])
+#print(len(names1), len(names2))
+#names1 - names2
+#print([item for item, count in collections.Counter(names1 | set(names2)).items() if count > 1])
+
+all_names = names1 | set(allnames2)
 
 def make_dog_dict(dog_list):
     dogs_dict = {}
@@ -20,8 +26,41 @@ dog_dict_2 = make_dog_dict(dogs2)
 
 len(dog_dict_2.keys())
 
-for name, obj in dog_dict.items():
+for name, obj in dog_dict_2.items():
+    if name in dog_dict:
+        if set(dog_dict[name]['parents']) != set(obj['parents']):
+            #print(dog_dict[name]['parents'], obj['parents'], name)
+            # Disparities are fine.
+            # dog_dict (from the first website) has better parent data in disparities, so leave be
+        dog_dict[name]['imgs'] = list(set(dog_dict[name]['imgs'] + obj['imgs']))
+        dog_dict[name]['urls'] = [dog_dict[name]['url'], obj['url']]
+        dog_dict[name]['other_names'] = obj['other_names']
+    else:
+        dog_dict[name] = obj
 
+len(dog_dict)
+
+all_parents = set()
+for name in dog_dict:
+    all_parents |= set(dog_dict[name]['parents'])
+len(all_parents)
+
+all_parents = list(all_parents)
+
+all_pure = set()
+for name in dog_dict:
+    if len(dog_dict[name]['parents']) == 0:
+        all_pure.add(name)
+
+all_parents - set(all_pure)
+
+f = open('dog_dict.json', 'w')
+f.write(json.dumps(dog_dict))
+f.close()
+
+f = open('all_parents.json', 'w')
+f.write(json.dumps(all_parents))
+f.close()
 
 
 #print([item for item, count in collections.Counter(names2).items() if count > 1])
@@ -38,6 +77,6 @@ for name, obj in dog_dict.items():
 #print([item for item, count in collections.Counter(all_entries_names).items() if count > 1])
 #print([n for n in names1 if n not in names2])
 
-all_hybrids = []
-for name in unique_names:
-    if !dogs2[name]['parents']
+#all_hybrids = []
+#for name in unique_names:
+#    if !dogs2[name]['parents']

@@ -34,8 +34,8 @@ def scrape_url_1(url) -> list:
             .replace('Dachshund ', 'Dachshund, ').replace('German Shepherd ', 'German Shepherd, ')\
             .replace('Golden Retriever ', 'Golden Retriever, ').replace('Husky ', 'Husky, ')\
             .replace('Pitbull ', 'Pitbull, ').replace('Rottweiler ', 'Rottweiler, ')\
-            .replace('Poodle ', 'Poodle, ').replace('Lab', 'Labrador Retriever')\
-            .replace('Labrador Retriever ', 'Labrador Retriever, ')\
+            .replace('Poodle ', 'Poodle, ').replace('Lab,', 'Labrador Retriever, ')\
+            .replace('Lab ', 'Labrador Retriever, ')\
             .replace('Husky', 'Siberian Husky')\
             .strip().split(', ')
         if len(dog_info['parents']) == 1:
@@ -61,3 +61,30 @@ f.write(json.dumps(all_dogs))
 f.close()
 
 Beeps.done()
+
+# Clean Data
+f = open('dog_list_1.json', 'r')
+data = json.load(f)
+f.close()
+for d in data:
+    if d['name'] == 'Dorgi':
+        d['parents'] = ['Corgi', 'Dachshund']
+    if d['parents'][0] == 'Bichon Frise,Shih-Tzu':
+        d['parents'][0] = 'Bichon Frise'
+        d['parents'].append('Shih-Tzu')
+        print('Bichon Frise, Shih-Tzu')
+    if d['parents'][0] == 'Labrador':
+        d['parents'][0] = 'Labrador Retriever'
+        print('pint')
+    if d['parents'][1] == 'Labrador':
+        d['parents'][1] = 'Labrador Retriever'
+        print('pongt')
+    if 'St Bernard' in d['parents']:
+        d['parents'][d['parents'].index('St Bernard')] = 'St. Bernard'
+    if ' the Cocker Spaniel' in d['parents']:
+        d['parents'][d['parents'].index(' the Cocker Spaniel')] = 'Cocker Spaniel'
+    if 'American Eskimo dog' in d['parents']:
+        d['parents'][d['parents'].index('American Eskimo dog')] = 'American Eskimo Dog'
+    d['parents'] = [p.strip() for p in d['parents'] if p != '']
+f = open('dog_list_1.json', 'w')
+f.write(json.dumps(data))
