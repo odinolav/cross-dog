@@ -28,7 +28,7 @@ len(dog_dict_2.keys())
 
 for name, obj in dog_dict_2.items():
     if name in dog_dict:
-        if set(dog_dict[name]['parents']) != set(obj['parents']):
+        #if set(dog_dict[name]['parents']) != set(obj['parents']):
             #print(dog_dict[name]['parents'], obj['parents'], name)
             # Disparities are fine.
             # dog_dict (from the first website) has better parent data in disparities, so leave be
@@ -52,14 +52,14 @@ for name in dog_dict:
     if len(dog_dict[name]['parents']) == 0:
         all_pure.add(name)
 
-all_parents - set(all_pure)
+set(all_parents) - set(all_pure)
 
 f = open('dog_dict.json', 'w')
 f.write(json.dumps(dog_dict))
 f.close()
 
 f = open('all_parents.json', 'w')
-f.write(json.dumps(all_parents))
+f.write(json.dumps([p.lower() for p in all_parents]))
 f.close()
 
 

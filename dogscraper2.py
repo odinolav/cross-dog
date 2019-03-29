@@ -72,6 +72,6 @@ f = open('dog_list_2.json', 'r')
 data = json.load(f)
 f.close()
 for d in data:
-    d['parents'] = [p.strip() for p in d['parents'] if p != '']
+    d['parents'] = [p.strip().replace('lll', 'll') for p in d['parents'] if p != '']
 f = open('dog_list_1.json', 'w')
 f.write(json.dumps(data))
